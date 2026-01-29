@@ -1,6 +1,8 @@
 package com.example.ordering.member.service;
 
 import com.example.ordering.common.auth.JwtTokenProvider;
+import com.example.ordering.common.exception.CustomException;
+import com.example.ordering.common.exception.ErrorCode;
 import com.example.ordering.member.dtos.*;
 import com.example.ordering.member.domain.Member;
 import com.example.ordering.member.repository.MemberRepository;
@@ -90,7 +92,7 @@ public class MemberService {
     public void deleteMember(Long memberId) {
 
         Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new IllegalArgumentException("회원이 존재하지 않습니다."));
+                .orElseThrow(() -> new CustomException(ErrorCode.PRODUCT_NOT_FOUND));
 
         member.deleteMember();
     }

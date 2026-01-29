@@ -28,8 +28,8 @@ public class JwtAuthenticationHandler implements AuthenticationEntryPoint {
         response.setCharacterEncoding("UTF-8");
 
         CommonErrorDto dto = CommonErrorDto.builder()
-                .status_code(401)
-                .error_message("token이 없거나 유효하지 않습니다")
+                .statusCode(401)
+                .errorMessage("token이 없거나 유효하지 않습니다")
                 .build();
         String data = objectMapper.writeValueAsString(dto);
         PrintWriter printWriter = response.getWriter();

@@ -7,7 +7,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class OrderingApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(OrderingApplication.class, args);
+
+        SpringApplication.run(OrderingApplication.class, args);
 	}
 
 }

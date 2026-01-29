@@ -14,7 +14,7 @@ public class ProductDetailDto {
     private int price;
     private String category;
     private int stockQuantity;
-    private String imagePath;
+    private String imageUrl;
     private Long memberId;
 
     public static ProductDetailDto fromEntity(Product product) {
@@ -24,7 +24,7 @@ public class ProductDetailDto {
                 .price(product.getPrice())
                 .category(product.getCategory())
                 .stockQuantity(product.getStockQuantity())
-                .imagePath(product.getImagePath())
+                .imageUrl(product.getImageUrl())
                 .memberId(product.getMember().getId())
                 .build();
     }

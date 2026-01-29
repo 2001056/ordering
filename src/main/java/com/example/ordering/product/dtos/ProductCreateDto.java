@@ -1,8 +1,11 @@
-package com.example.ordering.product.dtos;
+package com.example.ordering.product.dto;
 
 import com.example.ordering.member.domain.Member;
 import com.example.ordering.product.domain.Product;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
@@ -14,16 +17,16 @@ public class ProductCreateDto {
     private int price;
     private String category;
     private int stockQuantity;
-    private String imagePath;
 
-    public Product toEntity(Member member) {
-        return Product.builder()
-                .member(member)
-                .name(name)
-                .price(price)
-                .category(category)
-                .stockQuantity(stockQuantity)
-                .imagePath(imagePath)
-                .build();
+    public Product toEntity(Member member, String imageUrl) {
+        return new Product(
+                null,              // id는 DB가 생성
+                member,
+                name,
+                price,
+                category,
+                stockQuantity,
+                imageUrl
+        );
     }
 }

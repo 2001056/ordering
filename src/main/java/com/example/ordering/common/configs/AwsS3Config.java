@@ -19,7 +19,7 @@ public class AwsS3Config {
     @Value("${aws.region}")
     private String region;
     @Bean
-    public S3Client client(){
+    public S3Client s3Client(){
         AwsBasicCredentials basicCredentials = AwsBasicCredentials.create(accessKey,secretKey);
         return S3Client.builder()
                 .region(Region.of(region))
