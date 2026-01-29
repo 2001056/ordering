@@ -5,11 +5,13 @@ import com.example.ordering.member.dtos.*;
 import com.example.ordering.member.domain.Member;
 import com.example.ordering.member.repository.MemberRepository;
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -43,19 +45,22 @@ public class MemberService {
         return member.getId();
     }
 
-    public String login(MemberLoginDto dto) {
-
-        Member member = memberRepository.findByEmail(dto.getEmail())
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원"));
-
-        if (!passwordEncoder.matches(dto.getPassword(), member.getPassword())) {
-            throw new IllegalArgumentException("비밀번호 틀림");
+    public Member login(MemberLoginDto dto) {
+        Optional<Member> optmember = memberRepository.findByEmail(dto.getEmail());
+        boolean check = true;
+        if (!optmember.isPresent()){
+            check = false;
+        }else {
+            if (!passwordEncoder.matches(dto.getPassword(),optmember.get().getPassword())){
+                check = false;
+            }
         }
 
-        return jwtTokenProvider.createToken(
-                member.getId(),
-                member.getRole().name()
-        );
+        if(!check){
+            throw new IllegalArgumentException("email/pw is wrong");
+        }
+        return optmember.get();
+
     }
 
     // 회원 상세 조회 (마이페이지)
@@ -74,7 +79,13 @@ public class MemberService {
 
         return MemberDetailDto.fromEntity(member);
     }
-
+    public MemberDetailDto myinfo() {
+        String email = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+        Optional<Member> optMember = memberRepository.findByEmail(email);
+        Member member = optMember.orElseThrow(() -> new EntityNotFoundException("entity is not found"));
+        MemberDetailDto dto = MemberDetailDto.fromEntity(member);
+        return dto;
+    }
     // 회원 탈퇴 (Soft Delete)
     public void deleteMember(Long memberId) {
 
