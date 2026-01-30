@@ -43,5 +43,13 @@ public class Product {
         if (imageUrl != null) {
             this.imageUrl = imageUrl;
         }
+
     }
+    public void decreaseStock(int count) {
+        if (this.stockQuantity < count) {
+            throw new IllegalArgumentException("재고 부족");
+        }
+        this.stockQuantity -= count;
+    }
+
 }

@@ -1,10 +1,7 @@
 package com.example.ordering.order.domain;
 
 import com.example.ordering.product.domain.Product;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
@@ -12,23 +9,35 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@ToString
 public class OrderDetail {
 
     @Id
-    @GeneratedValue
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long detailId;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "order_id")
     private Order order;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_id", nullable = false)
     private Product product;
 
-    private int orderPrice;
-    private int quantity;
+    @Column(nullable = false)
+    private String productName;
 
-    public void setOrder(Order order) {
+    @Column(nullable = false)
+    private int productCount;
+
+    public static OrderDetail create(Product product, int productCount) {
+        return OrderDetail.builder()
+                .product(product)
+                .productName(product.getName())
+                .productCount(productCount)
+                .build();
+    }
+
+    void setOrder(Order order) {
         this.order = order;
     }
 }

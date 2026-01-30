@@ -26,18 +26,5 @@ public class GlobalExceptionHandler {
                                 .build()
                 );
     }
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<CommonErrorDto> handleException(Exception e) {
 
-        return ResponseEntity
-                .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(
-                        CommonErrorDto.builder()
-                                .statusCode(500)
-                                .errorCode("INTERNAL_SERVER_ERROR")
-                                .errorMessage("서버 내부 오류")
-                                .timestamp(LocalDateTime.now())
-                                .build()
-                );
-    }
 }
